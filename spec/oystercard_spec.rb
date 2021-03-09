@@ -28,39 +28,52 @@ describe Oystercard do
     end
   end
 
-  describe '#pay' do
-    it { is_expected.to respond_to(:pay).with(1).argument }
-    it 'should pay for my fair' do
-      card_with_balance = Oystercard.new(10)
-      expect(card_with_balance.pay(2.40)).to eq 7.60
+  describe 'in_journey?' do
+    it { is_expected.to respond_to :in_journey? }
+    it 'checks if a journey is taking place' do
+      card2.touch_in
+      expect(card2.in_journey?).to eq true
     end
-    it 'raise an error if balance is too low' do
-      expect { card.pay(2.40) }.to raise_error('Insuficient funds')
-    end
-  end
-
-  describe 'in_journey' do
-    it { is_expected.to respond_to :in_journey }
   end
 
   describe '#touch_in' do
     it { is_expected.to respond_to :touch_in }
-    it 'is aware that it is in use' do
-      expect(card2.touch_in).to eq true
-    end
+    # it 'is aware that it is in use' do
+    #   expect(card2.touch_in).to eq true
+    # end
     it 'cannot touch in when already in use' do
       card2.touch_in
       expect { card2.touch_in }.to raise_error 'Card already in use'
     end
-    it 'wont let you toch in if your balance is too low' do
+    it 'wont let you touch in if your balance is too low' do
       expect { card.touch_in }.to raise_error 'Insufficient funds'
+    end
+    it 'registers entry station' do
+      card2.touch_in("Oxford Street")
+      expect(card2.entry_station).to eq "Oxford Street"
     end
   end
 
   describe '#touch_out' do
     it { is_expected.to respond_to(:touch_out).with(1).argument }
-    it 'is aware that it is out of use' do
-      expect(card.touch_out(2.40)).to eq false
+    # it 'is aware that it is out of use' do
+    #   expect(card.touch_out(2.40)).to eq false
+    # end
+    it 'should pay for my fair' do
+      card2.touch_in
+      expect{card2.touch_out(2)}.to change{card2.balance}.by(-2)
     end
+    # it 'raise an error if balance is too low' do
+    #   expect { card.touch_out(2.40) }.to raise_error('Insuficient funds')
+    # end
   end
+
+  # describe '#entry_station' do
+  #   it 'registers entry station' do
+  #   card3 = double(:oystercard, :entry_station => "Oxford Street")
+  #   expect(card3.entry_station).to eq "Oxford Street"
+  #   end
+  # end
+
+
 end
