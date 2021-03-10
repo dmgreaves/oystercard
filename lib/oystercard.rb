@@ -1,13 +1,15 @@
+require_relative 'station'
+
 class Oystercard
 
 attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
 
-  def initialize(balance = 0)
+  def initialize(balance = 0, journey = Journey.new)
     @balance = balance
     @limit = 90
     @minimum = 1
     @entry_station = nil
-    @journeys = []
+    @journey = journey
   end
 
   def top_up(amount)
@@ -17,23 +19,15 @@ attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
 
   def touch_in(entry_station = "none")
     fail 'Insufficient funds' if @balance <= @minimum
-    fail 'Card already in use' if in_journey?
-
-    @journey = Hash.new
-    @journey["entry station"] = entry_station
-    @entry_station = entry_station
+    fail 'Card already in use' if @journey.in_journey?
+    @journey.entry_station(entry_station)
   end
 
-  def touch_out(fair, exit_station = "none")
-    pay(fair) if in_journey?
-    @journey["exit station"] = exit_station
-    @journeys << @journey
-    @entry_station = nil
+  def touch_out(exit_station = "none", fair = 2)
+    pay(fair) if @journey.in_journey?
+    @journey.exit_station(exit_station)
   end
 
-  def in_journey?
-    @entry_station != nil
-  end
 
   private
 

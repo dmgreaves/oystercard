@@ -10,7 +10,7 @@ describe Oystercard do
   describe '#top_up' do
 
     it 'tops up the card balance with the amount ' do
-      expect(card.top_up(10)).to eq 10
+      card.top_up(10)
       expect(card.balance).to eq 10
     end
   end
@@ -25,14 +25,6 @@ describe Oystercard do
   it 'raises an error if the balance exceeds 90' do
     card_with_balance = Oystercard.new(50)
     expect {card_with_balance.top_up(50) }.to raise_error('Reached top up limit of 90')
-    end
-  end
-
-  describe 'in_journey?' do
-    it { is_expected.to respond_to :in_journey? }
-    it 'checks if a journey is taking place' do
-      card2.touch_in
-      expect(card2.in_journey?).to eq true
     end
   end
 
@@ -75,17 +67,5 @@ describe Oystercard do
   #   end
   # end
 
-  describe '#journeys' do
-    card3 = Oystercard.new(90)
-    it 'card has an empty list of journey history at start' do
-      expect(card3.journeys).to be_empty
-    end
-
-    it 'touch in and out creates one journey' do
-      card3.touch_in('Finsbury Park')
-      card3.touch_out(3, 'Oxford Street')
-      expect(card3.journeys).to eq [{"entry station" => "Finsbury Park", "exit station" => "Oxford Street"}]
-    end
-  end
 
 end
