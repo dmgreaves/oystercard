@@ -20,7 +20,7 @@ attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
   def touch_in(entry_station = "none")
     fail 'Insufficient funds' if @balance <= @minimum
     fail 'Card already in use' if @journey.in_journey?
-    @journey.entry_station(entry_station)
+    @journey.set_entry_station(entry_station)
   end
 
   def touch_out(exit_station = "none", fair = 2)
@@ -28,6 +28,9 @@ attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
     @journey.exit_station(exit_station)
   end
 
+  def history
+    @journey.history
+  end
 
   private
 

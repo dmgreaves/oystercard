@@ -1,23 +1,30 @@
 require 'journey'
 require 'oystercard'
+describe Journey do
+  describe 'in_journey?' do
 
-describe 'in_journey?' do
-  it { is_expected.to respond_to :in_journey? }
-  it 'checks if a journey is taking place' do
-    card2.touch_in
-    expect(card2.in_journey?).to eq true
-  end
-end
-
-describe '#journeys' do
-  card3 = Oystercard.new(90)
-  it 'card has an empty list of journey history at start' do
-    expect(card3.journeys).to be_empty
+    let (:station) {Station.new("Angel",5) }
+    it 'checks if a journey is taking place' do
+      card = Oystercard.new(10,journey = Journey.new)
+      card.touch_in(station)
+      expect(journey.in_journey?).to eq true
+    end
   end
 
-  it 'touch in and out creates one journey' do
-    card3.touch_in('Finsbury Park')
-    card3.touch_out(3, 'Oxford Street')
-    expect(card3.journeys).to eq [{"entry station" => "Finsbury Park", "exit station" => "Oxford Street"}]
+  describe '#journeys' do
+    card3 = Oystercard.new(90)
+    it 'card has an empty list of journey history at start' do
+      expect(card3.history).to eq []
+    end
+
+    it 'touch in and out creates one journey' do
+      card3.touch_in('Finsbury Park')
+      card3.touch_out('Oxford Street', 3)
+      expect(card3.history).to eq [{"entry station" => "Finsbury Park", "exit station" => "Oxford Street"}]
+    end
+    it 'registers a station on touch in' do
+      subject.set_entry_station("Finsbury Park")
+      expect(subject.entry_station).to eq "Finsbury Park"
+    end
   end
 end

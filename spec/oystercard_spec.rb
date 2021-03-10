@@ -40,10 +40,6 @@ describe Oystercard do
     it 'wont let you touch in if your balance is too low' do
       expect { card.touch_in }.to raise_error 'Insufficient funds'
     end
-    it 'registers entry station' do
-      card2.touch_in("Oxford Street")
-      expect(card2.entry_station).to eq "Oxford Street"
-    end
   end
 
   describe '#touch_out' do

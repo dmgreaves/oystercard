@@ -1,12 +1,13 @@
 require_relative 'oystercard'
 
 class Journey
-
+  attr_reader :entry_station
+  
   def initialize
     @journeys = []
   end
 
-  def entry_station(station)
+  def set_entry_station(station)
     @journey = Hash.new
     @journey["entry station"] = station
     @entry_station = station
@@ -20,6 +21,10 @@ class Journey
 
   def in_journey?
     @entry_station != nil
+  end
+
+  def history
+    @journeys
   end
 
 end
