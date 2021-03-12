@@ -2,7 +2,7 @@ require_relative 'oystercard'
 
 class Journey
   attr_reader :entry_station
-  
+
   def initialize
     @journeys = []
   end
@@ -25,6 +25,10 @@ class Journey
 
   def history
     @journeys
+  end
+
+  def fare
+    1
   end
 
 end

@@ -43,7 +43,7 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_out).with(1).argument }
     it 'should pay for my fair' do
       card2.touch_in
-      expect{card2.touch_out(2)}.to change{card2.balance}.by(-2)
+      expect{card2.touch_out}.to change{card2.balance}.by(-1)
     end
   end
 

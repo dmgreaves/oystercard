@@ -1,4 +1,5 @@
 require_relative 'station'
+require_relative 'journey'
 
 class Oystercard
 
@@ -23,8 +24,8 @@ attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
     @journey.set_entry_station(entry_station)
   end
 
-  def touch_out(exit_station = "none", fair = 2)
-    pay(fair) if @journey.in_journey?
+  def touch_out(exit_station = "none")
+    pay if @journey.in_journey?
     @journey.exit_station(exit_station)
   end
 
@@ -34,8 +35,9 @@ attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
 
   private
 
-  def pay(fair)
+  def pay
     # fail "Insuficient funds" if (@balance -= fair) <= 0
+    fair = @journey.fare
     @balance -= fair
   end
 
