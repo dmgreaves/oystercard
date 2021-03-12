@@ -1,9 +1,9 @@
 require 'journey'
 require 'oystercard'
 describe Journey do
-  describe 'in_journey?' do
+  let (:station) {Station.new("Angel",5) }
 
-    let (:station) {Station.new("Angel",5) }
+  describe 'in_journey?' do
     it 'checks if a journey is taking place' do
       card = Oystercard.new(10,journey = Journey.new)
       card.touch_in(station)
@@ -26,8 +26,23 @@ describe Journey do
       subject.set_entry_station("Finsbury Park")
       expect(subject.entry_station).to eq "Finsbury Park"
     end
+  end
+
+  describe '#fare' do
     it 'deducts a standard fare if there is a complete journey' do
+      subject.set_entry_station(station)
       expect(subject.fare).to eq 1
+    end
+
+    it 'deducts a penalty fare (£6) when you fail to touch in' do
+      subject.exit_station(station)
+      expect(subject.fare).to eq Journey::PENALTY_FARE
+    end
+
+    it 'deducts a Penalty fare when you touch_in after failing to touch out on a previous journey' do
+      subject.set_entry_station(station)
+      subject.set_entry_station(station)
+      expect(subject.fare).to eq Journey::PENALTY_FARE
     end
   end
 end
