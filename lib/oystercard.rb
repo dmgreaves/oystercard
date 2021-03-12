@@ -35,8 +35,8 @@ attr_reader :balance, :limit, :in_journey, :entry_station, :journeys
   private
 
   def pay(fair)
-    fail "Insuficient funds" if (@balance -= fair) <= 0
-    @balance
+    # fail "Insuficient funds" if (@balance -= fair) <= 0
+    @balance -= fair
   end
 
 end

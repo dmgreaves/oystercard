@@ -30,9 +30,6 @@ describe Oystercard do
 
   describe '#touch_in' do
     it { is_expected.to respond_to :touch_in }
-    # it 'is aware that it is in use' do
-    #   expect(card2.touch_in).to eq true
-    # end
     it 'cannot touch in when already in use' do
       card2.touch_in
       expect { card2.touch_in }.to raise_error 'Card already in use'
@@ -44,24 +41,11 @@ describe Oystercard do
 
   describe '#touch_out' do
     it { is_expected.to respond_to(:touch_out).with(1).argument }
-    # it 'is aware that it is out of use' do
-    #   expect(card.touch_out(2.40)).to eq false
-    # end
     it 'should pay for my fair' do
       card2.touch_in
       expect{card2.touch_out(2)}.to change{card2.balance}.by(-2)
     end
-    # it 'raise an error if balance is too low' do
-    #   expect { card.touch_out(2.40) }.to raise_error('Insuficient funds')
-    # end
   end
-
-  # describe '#entry_station' do
-  #   it 'registers entry station' do
-  #   card3 = double(:oystercard, :entry_station => "Oxford Street")
-  #   expect(card3.entry_station).to eq "Oxford Street"
-  #   end
-  # end
 
 
 end
